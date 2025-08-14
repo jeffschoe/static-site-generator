@@ -10,14 +10,14 @@ class TextType(Enum):
     IMAGE = "image"
 
 
-class TextNode:
+class TextNode: # represents the various types of inline text that can exist in HTML and Markdown
     def __init__(self, text, text_type, url=None):
         self.text = text # the text content of this node
         self.text_type = text_type # the type of text this node contains, which is a member of the TextType enum.
         self.url = url # the URL of the link or image
 
     def __eq__(self, other):
-        # compare all attribues of classes and return TRUE if all are equal
+        # compare all attributes of classes and return TRUE if all are equal
         return (
             self.text == other.text
             and self.text_type == other.text_type
