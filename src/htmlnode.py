@@ -14,24 +14,15 @@ class HTMLNode(): # a "node" in an HTML document tree (like a <p> tag and its co
         self.props = props # A dictionary of key-value pairs representing the attributes of the HTML tag. For example, a link (<a> tag) might have {"href": "https://www.google.com"}
 
     def to_html(self):
-        raise NotImplementedError # Child classes will override this method to render themselves as HTML.
+        raise NotImplementedError("to_html method not implemented") # Child classes will override this method to render themselves as HTML.
     
     def props_to_html(self): # return a string that represents the HTML attributes of the node
-        props = []
-        for key in self.props:
-            props.append(f' {key}="{self.props[key]}"')
-        final_props = "".join(props)
-        return final_props
-    
-    def __eq__(self, other):
-        # compare all attribues of classes and return TRUE if all are equal
-        return (
-            self.tag == other.tag
-            and self.value == other.value
-            and self.children == other.children
-            and self.props == other.props
-        )
-
+        if self.props is None:
+            return "" # prevents errors is props is None
+        props_html = ""
+        for prop in self.props:
+            props_html += f' {prop}="{self.props[prop]}"'
+        return props_html
 
     def __repr__(self):
-        return f"HTMLNode({self.tag}, {self.value}, {self.children}, {self.props})"
+        return f"HTMLNode({self.tag}, {self.value}, children: {self.children}, {self.props})"
