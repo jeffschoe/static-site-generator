@@ -26,3 +26,25 @@ class HTMLNode(): # a "node" in an HTML document tree (like a <p> tag and its co
 
     def __repr__(self):
         return f"HTMLNode({self.tag}, {self.value}, children: {self.children}, {self.props})"
+    
+
+class LeafNode(HTMLNode): # child class of HTMLNode
+# A LeafNode is a type of HTMLNode that represents a single HTML tag with no children.
+    def __init__(self, tag, value, props=None): # does not accept a children argument
+        """
+        It should not allow for any children
+        The value data member should be required 
+        (and tag even though the tag's value may be None), 
+        while props can remain optional like the HTMLNode constructor.
+        """
+        super().__init__(tag, value, None, props) # takes arguments from init above, and pass them to HTMLNode constructor, which REQUIRES a children argument, so we must pass it None
+
+    def to_html(self):
+        if self.value is None:
+            raise ValueError("invalid HTML: no value")
+        if self.tag is None:
+            return self.value
+        return f"<{self.tag}{self.props_to_html()}>{self.value}</{self.tag}>"
+
+    def __repr__(self):
+        return f"LeafNode({self.tag}, {self.value}, {self.props})"
