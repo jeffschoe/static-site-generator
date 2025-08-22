@@ -2,6 +2,8 @@ import unittest
 
 from inline_markdown import (
     split_nodes_delimiter,
+    split_nodes_link,
+    split_nodes_image,
     extract_markdown_images,
     extract_markdown_links
     )
@@ -113,6 +115,85 @@ class TestSplitNodesDelimiter(unittest.TestCase):
                 TextNode("alsobold", TextType.BOLD), 
             ]
         )
+
+
+class TestSplitNodesImage(unittest.TestCase):
+    def test_split_image_multi_text_before_and_after_and_in_middle(self):
+        node = TextNode(
+            "This is text with a link ![to boot dev](https://www.boot.dev) and ![to youtube](https://www.youtube.com/@bootdotdev) lol ok?",
+            TextType.TEXT,
+        )
+        new_nodes = split_nodes_image([node])
+        self.assertListEqual(
+            new_nodes,
+            [
+                TextNode("This is text with a link ", TextType.TEXT),
+                TextNode("to boot dev", TextType.IMAGE, "https://www.boot.dev"),
+                TextNode(" and ", TextType.TEXT),
+                TextNode("to youtube", TextType.IMAGE, "https://www.youtube.com/@bootdotdev"),
+                TextNode(" lol ok?", TextType.TEXT),
+            ]
+        )
+
+    def test_split_image_multi_none_before_or_after_or_in_middle(self):
+        node = TextNode(
+            "![to boot dev](https://www.boot.dev)![to youtube](https://www.youtube.com/@bootdotdev)",
+            TextType.TEXT,
+        )
+        new_nodes = split_nodes_image([node])
+        self.assertListEqual(
+            new_nodes,
+            [
+                TextNode("to boot dev", TextType.IMAGE, "https://www.boot.dev"),
+                TextNode("to youtube", TextType.IMAGE, "https://www.youtube.com/@bootdotdev"),
+            ]
+        )
+
+    def test_split_image_no_links(self):
+        node = TextNode("just plain text", TextType.TEXT)
+        new_nodes = split_nodes_image([node])
+        self.assertListEqual(new_nodes, [TextNode("just plain text", TextType.TEXT),])
+
+
+class TestSplitNodesLink(unittest.TestCase):
+    def test_split_link_multi_text_before_and_after_and_in_middle(self):
+        node = TextNode(
+            "This is text with a link [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev) lol ok?",
+            TextType.TEXT,
+        )
+        new_nodes = split_nodes_link([node])
+        self.assertListEqual(
+            new_nodes,
+            [
+                TextNode("This is text with a link ", TextType.TEXT),
+                TextNode("to boot dev", TextType.LINK, "https://www.boot.dev"),
+                TextNode(" and ", TextType.TEXT),
+                TextNode("to youtube", TextType.LINK, "https://www.youtube.com/@bootdotdev"),
+                TextNode(" lol ok?", TextType.TEXT),
+            ]
+        )
+
+    def test_split_link_multi_none_before_or_after_or_in_middle(self):
+        node = TextNode(
+            "[to boot dev](https://www.boot.dev)[to youtube](https://www.youtube.com/@bootdotdev)",
+            TextType.TEXT,
+        )
+        new_nodes = split_nodes_link([node])
+        self.assertListEqual(
+            new_nodes,
+            [
+                TextNode("to boot dev", TextType.LINK, "https://www.boot.dev"),
+                TextNode("to youtube", TextType.LINK, "https://www.youtube.com/@bootdotdev"),
+            ]
+        )
+
+    def test_split_link_no_links(self):
+        node = TextNode("just plain text", TextType.TEXT)
+        new_nodes = split_nodes_link([node])
+        self.assertListEqual(new_nodes, [TextNode("just plain text", TextType.TEXT),])
+
+
+
 
 class TestImageAndLinkRegex(unittest.TestCase):
 
