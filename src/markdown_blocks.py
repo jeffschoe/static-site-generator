@@ -24,6 +24,10 @@ def markdown_to_blocks(markdown):
 def block_to_block_type(block):
     block_len = len(block)
     split_lines = block.split("\n")
+    if block.startswith(("# ", "## ", "### ", "#### ", "##### ", "###### ")):
+        return BlockType.HEADING
+    # commented code below is alternate in case we need checking for the block to not be empty after the " "
+    """
     if block.startswith("#"):
         count = 0
         # Iterate through the characters of the block
@@ -36,6 +40,7 @@ def block_to_block_type(block):
                 break
         if 1 <= count <= 6 and block_len >= count + 2 and block[count] == " ":
             return BlockType.HEADING
+    """
     if block.startswith("```") and block.endswith("```") and block_len >= 6:
         return BlockType.CODE
     if block.startswith(">"):
