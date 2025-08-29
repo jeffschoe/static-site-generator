@@ -52,7 +52,7 @@ class LeafNode(HTMLNode): # child class of HTMLNode
 
 class ParentNode(HTMLNode): # child class of HTMLNode
 # A ParentNode will handle the nesting of HTML nodes inside of one another. Any HTML node that's not "leaf" node (i.e. it has children) is a "parent" node.
-    def __init__(self, tag, children, props=None): # does not accept a children argument
+    def __init__(self, tag, children, props=None): # does not accept a value argument
         """
         The tag and children arguments are not optional
         It doesn't take a value argument
