@@ -1,18 +1,20 @@
-from textnode import TextNode, TextType
-from copy_static import copy_static
+import os
+import shutil
+
+from copystatic import copy_files_recursive
+
+dir_path_static = "./static"
+dir_path_public = "./public"
+
 
 def main():
 
+    print("Deleting public directory...")
+    if os.path.exists(dir_path_public):
+        shutil.rmtree(dir_path_public)
 
-    node = TextNode(
-        "This is a text node",
-        TextType.BOLD, 
-        "https://www.boot.dev"
-        )
-    
-    print(node) # __repr__ method automatically called, no need to explicitly call it
-
-    copy_static("static", "public")
+    print("Copying static files to public directory...")
+    copy_files_recursive(dir_path_static, dir_path_public)
 
 if __name__ == "__main__": # evaluates to TRUE if this script/file is run directly, so code below executes. If you import it to someting else, this will be FALSE, so code below will not run automatically
     main() # main function gets executed
