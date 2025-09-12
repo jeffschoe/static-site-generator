@@ -72,13 +72,9 @@ def markdown_to_html_node(markdown):
     # 1. split the markdown into blocks
     blocks = markdown_to_blocks(markdown)
     children = [] # children of the single parent HTMLNode
-    for block in blocks:
-        print(f"\n***DEBUG: block = {block}\n")
-        
+    for block in blocks:        
         # 2. determine block type
-        html_node = block_to_html_node(block)
-        
-      
+        html_node = block_to_html_node(block)      
         # 3. based on the type of block, create a new HTMLNode with the proper data
         # will get something like BlockType.PARAGRAPH, or .QUOTE or .HEADING
         children.append(html_node)
